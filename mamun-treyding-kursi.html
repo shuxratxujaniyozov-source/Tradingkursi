@@ -1,0 +1,1175 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Treyding Kursi — Ma'mun Universiteti</title>
+
+  <!-- ── Tailwind CSS CDN ── -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- ── Google Fonts: Inter ── -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+  <!-- ── Tailwind Custom Config ── -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
+        },
+      },
+    };
+  </script>
+
+  <style>
+    /* ═══════ Base ═══════ */
+    *, *::before, *::after { box-sizing: border-box; }
+    html  { scroll-behavior: smooth; }
+    body  { font-family: 'Inter', sans-serif; }
+
+    /* ═══════ Hero ═══════ */
+    .hero-bg {
+      background: linear-gradient(140deg, #1e3a8a 0%, #1e40af 50%, #1d4ed8 100%);
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg width='52' height='52' viewBox='0 0 52 52' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M0 0h26v26H0V0zm26 26h26v26H26V26z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+
+    /* ═══════ Navbar ═══════ */
+    .nav-shadow { box-shadow: 0 2px 24px rgba(0,0,0,0.08); }
+    #mobile-menu { display: none; }
+    #mobile-menu.open { display: block; }
+
+    /* ═══════ Feature cards ═══════ */
+    .feature-card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 28px 22px;
+      border: 1px solid #e0e7ff;
+      box-shadow: 0 4px 24px rgba(30,64,175,0.05);
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.22s ease, box-shadow 0.22s ease;
+    }
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 4px; height: 100%;
+      background: linear-gradient(to bottom, #1e40af, #059669);
+    }
+    .feature-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 16px 48px rgba(30,64,175,0.12);
+    }
+
+    /* ═══════ Form inputs ═══════ */
+    .f-input {
+      width: 100%;
+      padding: 12px 16px;
+      border: 2px solid #e5e7eb;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      font-family: 'Inter', sans-serif;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      background: #fff;
+      color: #111827;
+    }
+    .f-input:focus {
+      border-color: #1e40af;
+      box-shadow: 0 0 0 3px rgba(30,64,175,0.1);
+    }
+    .f-input.is-error { border-color: #ef4444; }
+    .f-label {
+      display: block;
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 6px;
+      font-size: 0.875rem;
+    }
+    .err-txt {
+      color: #ef4444;
+      font-size: 0.78rem;
+      margin-top: 4px;
+    }
+
+    /* ═══════ Contact cards ═══════ */
+    .c-card {
+      border: 2px solid #e5e7eb;
+      border-radius: 14px;
+      padding: 14px 10px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      text-align: center;
+      transition: border-color 0.18s, background 0.18s, box-shadow 0.18s;
+      background: #fff;
+    }
+    .c-card:hover { border-color: #1e40af; background: #eff6ff; }
+    .c-card.picked {
+      border-color: #1e40af;
+      background: #eff6ff;
+      box-shadow: 0 0 0 3px rgba(30,64,175,0.12);
+    }
+    .c-card .icon-wrap {
+      width: 46px; height: 46px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* ═══════ Day pills ═══════ */
+    .d-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 9px 18px;
+      border-radius: 9999px;
+      border: 2px solid #d1d5db;
+      background: #fff;
+      color: #374151;
+      font-weight: 600;
+      font-size: 0.82rem;
+      cursor: pointer;
+      transition: all 0.18s ease;
+      user-select: none;
+    }
+    .d-pill:hover  { border-color: #1e40af; color: #1e40af; }
+    .d-pill.on {
+      border-color: #1e40af;
+      background: #1e40af;
+      color: #fff;
+      box-shadow: 0 2px 10px rgba(30,64,175,0.28);
+    }
+
+    /* ═══════ Buttons ═══════ */
+    .btn-green {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: linear-gradient(135deg, #059669, #047857);
+      color: #fff;
+      font-weight: 700;
+      border-radius: 12px;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .btn-green:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(5,150,105,0.38);
+    }
+    .btn-green:active { transform: translateY(0); }
+
+    .btn-blue {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: linear-gradient(135deg, #1e40af, #1d4ed8);
+      color: #fff;
+      font-weight: 700;
+      border-radius: 12px;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .btn-blue:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(30,64,175,0.38);
+    }
+
+    /* ═══════ Section badge ═══════ */
+    .s-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #eff6ff;
+      color: #1e40af;
+      font-weight: 700;
+      font-size: 0.72rem;
+      padding: 5px 14px;
+      border-radius: 9999px;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+    }
+
+    /* ═══════ Modal ═══════ */
+    .modal-wrap {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.55);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      padding: 16px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.28s ease;
+    }
+    .modal-wrap.show {
+      opacity: 1;
+      pointer-events: all;
+    }
+    .modal-box {
+      background: #fff;
+      border-radius: 22px;
+      padding: 36px 28px;
+      max-width: 500px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      transform: translateY(28px) scale(0.97);
+      transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
+      outline: none;
+    }
+    .modal-wrap.show .modal-box {
+      transform: translateY(0) scale(1);
+    }
+
+    /* Check animation */
+    @keyframes popIn {
+      from { transform: scale(0) rotate(-15deg); opacity: 0; }
+      to   { transform: scale(1) rotate(0deg);  opacity: 1; }
+    }
+    .pop-in { animation: popIn 0.4s cubic-bezier(0.34,1.56,0.64,1) both; }
+
+    /* Summary row */
+    .sum-row {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      padding: 9px 0;
+      border-bottom: 1px solid #f3f4f6;
+    }
+    .sum-row:last-child { border-bottom: none; }
+    .sum-label { font-size: 0.78rem; color: #6b7280; font-weight: 500; min-width: 110px; flex-shrink: 0; }
+    .sum-val   { font-size: 0.88rem; color: #111827; font-weight: 600; flex: 1; word-break: break-word; }
+
+    /* Spin */
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .spin { animation: spin 0.8s linear infinite; }
+
+    /* Responsive */
+    @media (max-width: 480px) {
+      .modal-box { padding: 26px 18px; }
+      .sum-label { min-width: 90px; }
+    }
+  </style>
+</head>
+
+<body class="bg-gray-50 text-gray-800">
+
+<!-- ════════════════════════════════════════════════════
+     NAVBAR
+════════════════════════════════════════════════════ -->
+<nav id="navbar" class="fixed top-0 left-0 right-0 z-50 bg-white transition-shadow duration-300">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16 lg:h-20">
+
+      <!-- Logo -->
+      <a href="#" class="flex items-center gap-3 no-underline">
+        <div class="w-10 h-10 rounded-xl bg-blue-800 flex items-center justify-center flex-shrink-0">
+          <!-- University shield icon -->
+          <svg class="w-6 h-6 text-white" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5L12 1zm0 2.18l7 3.12V11c0 4.52-3.07 8.74-7 9.93-3.93-1.19-7-5.41-7-9.93V6.3L12 3.18z"/>
+          </svg>
+        </div>
+        <div>
+          <div class="text-sm font-bold text-gray-900 leading-tight">Ma'mun Universiteti</div>
+          <div class="text-xs font-semibold text-blue-800">Treyding Kursi</div>
+        </div>
+        <span class="hidden sm:inline-flex items-center bg-emerald-100 text-emerald-700 text-xs font-bold px-2.5 py-1 rounded-full">BEPUL</span>
+      </a>
+
+      <!-- Desktop nav -->
+      <div class="hidden md:flex items-center gap-5">
+        <a href="#about"    class="text-sm font-medium text-gray-600 hover:text-blue-800 transition-colors">Kurs haqida</a>
+        <a href="#register" class="text-sm font-medium text-gray-600 hover:text-blue-800 transition-colors">Ro'yxatdan o'tish</a>
+        <a href="#register" class="btn-green text-sm py-2.5 px-5">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+          Ro'yxatdan o'ting
+        </a>
+      </div>
+
+      <!-- Hamburger -->
+      <button id="hamburger" class="md:hidden p-2 rounded-lg text-gray-600 hover:bg-gray-100 transition-colors" aria-label="Menyu ochish">
+        <svg id="ham-icon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+        <svg id="close-icon" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile menu -->
+  <div id="mobile-menu" class="md:hidden bg-white border-t border-gray-100 px-4 pb-4">
+    <div class="flex flex-col gap-1 pt-3">
+      <a href="#about"    onclick="closeMobileMenu()" class="block px-3 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-lg transition-colors">Kurs haqida</a>
+      <a href="#register" onclick="closeMobileMenu()" class="block px-3 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-lg transition-colors">Ro'yxatdan o'tish</a>
+      <a href="#register" onclick="closeMobileMenu()" class="btn-green w-full py-3 mt-2 text-sm">Ro'yxatdan o'ting</a>
+    </div>
+  </div>
+</nav>
+
+
+<!-- ════════════════════════════════════════════════════
+     HERO
+════════════════════════════════════════════════════ -->
+<section class="hero-bg pt-16 lg:pt-20">
+  <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
+    <div class="grid lg:grid-cols-2 gap-12 items-center">
+
+      <!-- Text -->
+      <div class="text-white">
+        <div class="inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-4 py-2 text-sm font-semibold mb-6">
+          <span class="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></span>
+          Ro'yxatdan o'tish hozir ochiq
+        </div>
+
+        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold leading-tight mb-5">
+          Ma'mun Universitetida<br/>
+          <span class="text-emerald-400">Treyding Kursiga</span><br/>
+          Ro'yxatdan O'ting!
+        </h1>
+
+        <p class="text-lg text-blue-100 mb-8 max-w-lg leading-relaxed">
+          Moliyaviy bozorlarda muvaffaqiyatli ishlashni o'rganing. Texnik tahlil, risk boshqarish va real strategiyalar — hammasini bepul o'zlashtiring!
+        </p>
+
+        <div class="flex flex-wrap gap-4 mb-10">
+          <a href="#register" class="btn-green px-8 py-4 text-base">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            Hozir ro'yxatdan o'ting
+          </a>
+          <a href="#about" class="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 border border-white/25 text-white font-semibold px-8 py-4 rounded-xl transition-all text-base">
+            Kurs haqida
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+            </svg>
+          </a>
+        </div>
+
+        <!-- Trust badges -->
+        <div class="flex flex-wrap gap-6">
+          <div class="flex items-center gap-2 text-white/80 text-sm font-medium">
+            <svg class="w-5 h-5 text-emerald-400 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+            </svg>
+            100% bepul
+          </div>
+          <div class="flex items-center gap-2 text-white/80 text-sm font-medium">
+            <svg class="w-5 h-5 text-emerald-400 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+            </svg>
+            Sertifikat beriladigan
+          </div>
+          <div class="flex items-center gap-2 text-white/80 text-sm font-medium">
+            <svg class="w-5 h-5 text-emerald-400 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+            </svg>
+            Amaliy mashg'ulotlar
+          </div>
+        </div>
+      </div>
+
+      <!-- Hero visual: trading chart card -->
+      <div class="hidden lg:flex justify-center items-center">
+        <div class="relative w-full max-w-sm">
+          <div class="bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 p-6 shadow-2xl">
+            <!-- Chart header -->
+            <div class="flex items-center justify-between mb-4">
+              <div>
+                <div class="text-white font-bold text-sm">Treyding Kursi</div>
+                <div class="text-blue-200 text-xs">Ma'mun Universiteti</div>
+              </div>
+              <div class="text-right">
+                <div class="text-emerald-400 font-bold text-sm">+4.28%</div>
+                <div class="text-blue-200 text-xs">o'sish ↑</div>
+              </div>
+            </div>
+
+            <!-- SVG Chart -->
+            <svg viewBox="0 0 320 160" class="w-full" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%"   stop-color="#10b981" stop-opacity="0.45"/>
+                  <stop offset="100%" stop-color="#10b981" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+              <!-- Grid -->
+              <line x1="0" y1="40"  x2="320" y2="40"  stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+              <line x1="0" y1="80"  x2="320" y2="80"  stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+              <line x1="0" y1="120" x2="320" y2="120" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+              <!-- Area -->
+              <path d="M0 130 L28 118 L55 108 L78 92 L100 100 L125 76 L148 82 L172 62 L196 67 L220 48 L248 34 L276 22 L310 12 L320 10 L320 160 L0 160 Z" fill="url(#areaGrad)"/>
+              <!-- Line -->
+              <path d="M0 130 L28 118 L55 108 L78 92 L100 100 L125 76 L148 82 L172 62 L196 67 L220 48 L248 34 L276 22 L310 12 L320 10" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <!-- Candles -->
+              <rect x="22"  y="110" width="7" height="14" fill="#10b981" rx="1.5"/>
+              <rect x="50"  y="100" width="7" height="12" fill="#10b981" rx="1.5"/>
+              <rect x="94"  y="96"  width="7" height="10" fill="#ef4444" rx="1.5"/>
+              <rect x="119" y="70"  width="7" height="13" fill="#10b981" rx="1.5"/>
+              <rect x="143" y="78"  width="7" height="9"  fill="#ef4444" rx="1.5"/>
+              <rect x="166" y="57"  width="7" height="11" fill="#10b981" rx="1.5"/>
+              <rect x="190" y="62"  width="7" height="8"  fill="#ef4444" rx="1.5"/>
+              <rect x="214" y="43"  width="7" height="12" fill="#10b981" rx="1.5"/>
+              <rect x="242" y="28"  width="7" height="13" fill="#10b981" rx="1.5"/>
+              <rect x="270" y="17"  width="7" height="11" fill="#10b981" rx="1.5"/>
+              <!-- Dot at end -->
+              <circle cx="320" cy="10" r="4" fill="#10b981"/>
+              <circle cx="320" cy="10" r="8" fill="#10b981" fill-opacity="0.25"/>
+            </svg>
+
+            <div class="flex justify-between mt-2 text-white/40 text-xs px-1">
+              <span>Yanv</span><span>Fev</span><span>Mar</span><span>Apr</span><span>May</span>
+            </div>
+          </div>
+
+          <!-- Floating labels -->
+          <div class="absolute -top-3 -right-3 bg-emerald-500 text-white text-xs font-bold px-3 py-1.5 rounded-xl shadow-lg">📈 Treyding</div>
+          <div class="absolute -bottom-3 -left-3 bg-white text-gray-800 text-xs font-bold px-3 py-1.5 rounded-xl shadow-lg">🏛️ Ma'mun Univ.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Wave -->
+  <div class="relative z-10 -mb-1">
+    <svg viewBox="0 0 1440 56" xmlns="http://www.w3.org/2000/svg" class="w-full block">
+      <path d="M0 56L60 46.7C120 37.3 240 18.7 360 14C480 9.3 600 18.7 720 26.3C840 33.7 960 39.3 1080 38.7C1200 38 1320 30.7 1380 27L1440 23.3V56H1380C1320 56 1200 56 1080 56C960 56 840 56 720 56C600 56 480 56 360 56C240 56 120 56 60 56H0Z" fill="#f9fafb"/>
+    </svg>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════════════
+     KURS HAQIDA
+════════════════════════════════════════════════════ -->
+<section id="about" class="bg-gray-50 py-16 lg:py-24">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+    <!-- Header -->
+    <div class="text-center mb-12">
+      <div class="s-badge mb-4">
+        <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+          <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.69 0 3.254.554 4.5 1.477V4.804zm.5 10.67A7.969 7.969 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804v10.67z"/>
+        </svg>
+        Kurs dasturi
+      </div>
+      <h2 class="text-3xl lg:text-4xl font-extrabold text-gray-900 mb-4">Kursda nima o'rganasiz?</h2>
+      <p class="text-gray-500 text-lg max-w-xl mx-auto">
+        Amaliy tajriba va nazariy bilimlar yig'indisi — moliyaviy erkinlikka birinchi qadam.
+      </p>
+    </div>
+
+    <!-- 4 Feature cards -->
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-12">
+
+      <!-- 1 -->
+      <div class="feature-card">
+        <div class="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center mb-4">
+          <svg class="w-6 h-6 text-blue-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+          </svg>
+        </div>
+        <h3 class="text-base font-bold text-gray-900 mb-2">Texnik Tahlil</h3>
+        <p class="text-gray-500 text-sm leading-relaxed">Grafik naqshlar, RSI, MACD va boshqa indikatorlarni o'rganing. Narx harakatini oldindan bashorat qiling.</p>
+      </div>
+
+      <!-- 2 -->
+      <div class="feature-card">
+        <div class="w-12 h-12 bg-red-50 rounded-xl flex items-center justify-center mb-4">
+          <svg class="w-6 h-6 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+          </svg>
+        </div>
+        <h3 class="text-base font-bold text-gray-900 mb-2">Risklarni Boshqarish</h3>
+        <p class="text-gray-500 text-sm leading-relaxed">Stop-loss, kapital taqsimoti va portfelni himoya qilish. Zarar minimal — foyda maksimal.</p>
+      </div>
+
+      <!-- 3 -->
+      <div class="feature-card">
+        <div class="w-12 h-12 bg-emerald-50 rounded-xl flex items-center justify-center mb-4">
+          <svg class="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M13 10V3L4 14h7v7l9-11h-7z"/>
+          </svg>
+        </div>
+        <h3 class="text-base font-bold text-gray-900 mb-2">Amaliy Strategiyalar</h3>
+        <p class="text-gray-500 text-sm leading-relaxed">Real bozorda sinab ko'rilgan tayyor treyding tizimlari. Demo akkauntda amaliyot.</p>
+      </div>
+
+      <!-- 4 -->
+      <div class="feature-card">
+        <div class="w-12 h-12 bg-purple-50 rounded-xl flex items-center justify-center mb-4">
+          <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+          </svg>
+        </div>
+        <h3 class="text-base font-bold text-gray-900 mb-2">Treyding Psixologiyasi</h3>
+        <p class="text-gray-500 text-sm leading-relaxed">Hissiy qarorlardan qochish, sabr va intizom. Professional treyder kabi fikrlash.</p>
+      </div>
+    </div>
+
+    <!-- Info strip -->
+    <div class="bg-white rounded-2xl border border-blue-50 shadow-sm overflow-hidden">
+      <div class="grid sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-gray-100">
+
+        <div class="flex flex-col items-center py-8 px-6 text-center">
+          <div class="w-14 h-14 bg-emerald-100 rounded-full flex items-center justify-center mb-3">
+            <svg class="w-7 h-7 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+          </div>
+          <div class="text-2xl font-extrabold text-gray-900 mb-1">100% Bepul</div>
+          <div class="text-gray-500 text-sm">Hech qanday to'lov talab qilinmaydi</div>
+        </div>
+
+        <div class="flex flex-col items-center py-8 px-6 text-center">
+          <div class="w-14 h-14 bg-blue-100 rounded-full flex items-center justify-center mb-3">
+            <svg class="w-7 h-7 text-blue-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"/>
+            </svg>
+          </div>
+          <div class="text-2xl font-extrabold text-gray-900 mb-1">Amaliy</div>
+          <div class="text-gray-500 text-sm">Real bozorda demo mashq va loyihalar</div>
+        </div>
+
+        <div class="flex flex-col items-center py-8 px-6 text-center">
+          <div class="w-14 h-14 bg-yellow-100 rounded-full flex items-center justify-center mb-3">
+            <svg class="w-7 h-7 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>
+            </svg>
+          </div>
+          <div class="text-2xl font-extrabold text-gray-900 mb-1">Sertifikat</div>
+          <div class="text-gray-500 text-sm">Rasmiy tasdiqnoma beriladigan</div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════════════
+     RO'YXATDAN O'TISH FORMASI
+════════════════════════════════════════════════════ -->
+<section id="register" class="py-16 lg:py-24" style="background: linear-gradient(180deg, #f9fafb 0%, #eff6ff 100%);">
+  <div class="max-w-2xl mx-auto px-4 sm:px-6">
+
+    <!-- Header -->
+    <div class="text-center mb-10">
+      <div class="s-badge mb-4">
+        <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+          <path d="M8 9a3 3 0 100-6 3 3 0 000 6zM8 11a6 6 0 016 6H2a6 6 0 016-6zM16 7a1 1 0 10-2 0v1h-1a1 1 0 100 2h1v1a1 1 0 102 0v-1h1a1 1 0 100-2h-1V7z"/>
+        </svg>
+        Ariza topshirish
+      </div>
+      <h2 class="text-3xl lg:text-4xl font-extrabold text-gray-900 mb-3">Ro'yxatdan O'ting</h2>
+      <p class="text-gray-500 text-lg">Quyidagi maydonlarni to'ldiring va birinchilar qatorida bo'ling!</p>
+    </div>
+
+    <!-- Form card -->
+    <div class="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 lg:p-8">
+
+      <!--
+      ┌──────────────────────────────────────────────────────────────────┐
+      │   FORMSPREE ULASH — KEYINCHALIK                                   │
+      │                                                                    │
+      │   1. https://formspree.io da hisob yarating                        │
+      │   2. Yangi forma qo'shing va FORM_ID oling                        │
+      │   3. Quyidagi submitForm() funksiyasida izoh qilingan             │
+      │      fetch() blokini yoqing va FORM_ID ni almashtiring            │
+      │                                                                    │
+      │   <form> tegi action sifatida: action="https://formspree.io/f/ID" │
+      └──────────────────────────────────────────────────────────────────┘
+      -->
+      <form id="reg-form" novalidate autocomplete="off">
+
+        <!-- ── 1. Ism va Familiya ── -->
+        <div class="mb-5">
+          <label for="f-name" class="f-label">
+            Ism va Familiya <span class="text-red-500">*</span>
+          </label>
+          <input
+            type="text"
+            id="f-name"
+            name="fullname"
+            placeholder="Masalan: Abdullayev Jasur"
+            class="f-input"
+            autocomplete="name"
+          />
+          <p id="err-name" class="err-txt hidden">Ism va familiyangizni kiriting (kamida 3 ta harf)</p>
+        </div>
+
+        <!-- ── 2. Guruh ── -->
+        <div class="mb-5">
+          <label for="f-group" class="f-label">
+            Qaysi guruhda o'qiysiz? <span class="text-red-500">*</span>
+          </label>
+          <input
+            type="text"
+            id="f-group"
+            name="group"
+            placeholder="Masalan: IQT-23-01, MM-24-02"
+            class="f-input"
+          />
+          <p id="err-group" class="err-txt hidden">Guruh raqamingizni kiriting</p>
+        </div>
+
+        <!-- ── 3. Bog'lanish usuli ── -->
+        <div class="mb-5">
+          <label class="f-label mb-3 block">
+            Bog'lanish usuli <span class="text-red-500">*</span>
+          </label>
+
+          <div class="grid grid-cols-3 gap-3" role="radiogroup" aria-label="Bog'lanish usulini tanlang">
+
+            <!-- Telefon -->
+            <div class="c-card" id="cc-phone" role="radio" tabindex="0" aria-checked="false"
+                 onclick="pickContact('phone')"
+                 onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();pickContact('phone')}">
+              <div class="icon-wrap bg-blue-100">
+                <svg class="w-6 h-6 text-blue-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+                </svg>
+              </div>
+              <span class="text-xs font-bold text-gray-800">Telefon</span>
+              <span class="text-xs text-gray-400">Qo'ng'iroq</span>
+            </div>
+
+            <!-- Telegram -->
+            <div class="c-card" id="cc-telegram" role="radio" tabindex="0" aria-checked="false"
+                 onclick="pickContact('telegram')"
+                 onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();pickContact('telegram')}">
+              <div class="icon-wrap bg-sky-100">
+                <!-- Telegram icon -->
+                <svg class="w-6 h-6 text-sky-500" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+                </svg>
+              </div>
+              <span class="text-xs font-bold text-gray-800">Telegram</span>
+              <span class="text-xs text-gray-400">Username</span>
+            </div>
+
+            <!-- Boshqa -->
+            <div class="c-card" id="cc-other" role="radio" tabindex="0" aria-checked="false"
+                 onclick="pickContact('other')"
+                 onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();pickContact('other')}">
+              <div class="icon-wrap bg-gray-100">
+                <svg class="w-6 h-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+                </svg>
+              </div>
+              <span class="text-xs font-bold text-gray-800">Boshqa</span>
+              <span class="text-xs text-gray-400">Usul</span>
+            </div>
+          </div>
+
+          <p id="err-contact-type" class="err-txt hidden mt-2">Bog'lanish usulini tanlang</p>
+
+          <!-- Dynamic field -->
+          <div id="dyn-field" class="mt-4 hidden">
+
+            <!-- Phone -->
+            <div id="df-phone" class="hidden">
+              <label for="inp-phone" class="f-label">Telefon raqami <span class="text-red-500">*</span></label>
+              <div class="relative">
+                <span class="absolute left-3 top-1/2 -translate-y-1/2 text-lg select-none">🇺🇿</span>
+                <input type="tel" id="inp-phone" name="contact_phone"
+                       placeholder="+998 90 123 45 67" class="f-input pl-10"/>
+              </div>
+              <p class="text-xs text-gray-400 mt-1">Masalan: +998 90 123 45 67</p>
+            </div>
+
+            <!-- Telegram -->
+            <div id="df-telegram" class="hidden">
+              <label for="inp-telegram" class="f-label">Telegram username <span class="text-red-500">*</span></label>
+              <div class="relative">
+                <span class="absolute left-4 top-1/2 -translate-y-1/2 text-sky-500 font-bold text-base select-none">@</span>
+                <input type="text" id="inp-telegram" name="contact_telegram"
+                       placeholder="username" class="f-input pl-9"/>
+              </div>
+              <p class="text-xs text-gray-400 mt-1">Telegram'dagi @username ni kiriting</p>
+            </div>
+
+            <!-- Other -->
+            <div id="df-other" class="hidden">
+              <label for="inp-other" class="f-label">Qo'shimcha ma'lumot <span class="text-red-500">*</span></label>
+              <textarea id="inp-other" name="contact_other" rows="3"
+                        placeholder="Qanday usulda bog'lanish mumkin? Batafsil yozing..."
+                        class="f-input resize-none"></textarea>
+            </div>
+
+            <p id="err-contact-val" class="err-txt hidden">Bu maydonni to'ldirish shart</p>
+          </div>
+        </div>
+
+        <!-- ── 4. Qulay kunlar ── -->
+        <div class="mb-5">
+          <label class="f-label mb-3 block">
+            Qaysi kunlar sizga qulay?
+            <span class="text-gray-400 font-normal text-xs">(ixtiyoriy)</span>
+          </label>
+          <div class="flex flex-wrap gap-2">
+            <button type="button" class="d-pill" data-day="Dushanba"   onclick="toggleDay(this)">Dushanba</button>
+            <button type="button" class="d-pill" data-day="Seshanba"   onclick="toggleDay(this)">Seshanba</button>
+            <button type="button" class="d-pill" data-day="Chorshanba" onclick="toggleDay(this)">Chorshanba</button>
+            <button type="button" class="d-pill" data-day="Payshanba"  onclick="toggleDay(this)">Payshanba</button>
+            <button type="button" class="d-pill" data-day="Juma"       onclick="toggleDay(this)">Juma</button>
+            <button type="button" class="d-pill" data-day="Shanba"     onclick="toggleDay(this)">Shanba</button>
+            <button type="button" class="d-pill" data-day="Yakshanba"  onclick="toggleDay(this)">Yakshanba</button>
+          </div>
+        </div>
+
+        <!-- ── 5. Qulay vaqt ── -->
+        <div class="mb-5">
+          <label for="f-time" class="f-label">
+            Qaysi vaqt sizga qulay?
+            <span class="text-gray-400 font-normal text-xs">(ixtiyoriy)</span>
+          </label>
+          <div class="relative">
+            <select id="f-time" name="time_pref" class="f-input appearance-none cursor-pointer pr-10 bg-white">
+              <option value="">— Vaqtni tanlang —</option>
+              <option value="Ertalab (09:00–12:00)">Ertalab (09:00 – 12:00)</option>
+              <option value="Tushdan keyin (13:00–16:00)">Tushdan keyin (13:00 – 16:00)</option>
+              <option value="Kechqurun (17:00–20:00)">Kechqurun (17:00 – 20:00)</option>
+              <option value="Boshqa vaqt">Boshqa vaqt</option>
+            </select>
+            <span class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+              </svg>
+            </span>
+          </div>
+        </div>
+
+        <!-- ── 6. Qo'shimcha izoh ── -->
+        <div class="mb-8">
+          <label for="f-comment" class="f-label">
+            Qo'shimcha izohlar
+            <span class="text-gray-400 font-normal text-xs">(ixtiyoriy)</span>
+          </label>
+          <textarea id="f-comment" name="comment" rows="3"
+                    placeholder="Savollaringiz, takliflaringiz yoki boshqa ma'lumotlar..."
+                    class="f-input resize-none"></textarea>
+        </div>
+
+        <!-- Submit -->
+        <button type="submit" id="sub-btn"
+                class="btn-green w-full py-4 text-base font-bold rounded-xl">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+          Ariza Yuborish
+        </button>
+
+        <p class="text-center text-xs text-gray-400 mt-4 leading-relaxed">
+          Ma'lumotlaringiz faqat kurs maqsadlarida ishlatiladi va uchinchi shaxslarga berilmaydi.
+        </p>
+
+      </form>
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════════════
+     FOOTER
+════════════════════════════════════════════════════ -->
+<footer class="bg-gray-900 text-white py-10">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex flex-col md:flex-row items-center justify-between gap-5">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 bg-blue-700 rounded-lg flex items-center justify-center text-white font-black text-sm">M</div>
+        <div>
+          <div class="font-bold text-sm">Ma'mun Universiteti</div>
+          <div class="text-gray-400 text-xs">Treyding Kursi</div>
+        </div>
+      </div>
+      <p class="text-gray-500 text-sm text-center">
+        © 2024 Ma'mun Universiteti. Barcha huquqlar himoyalangan.
+      </p>
+      <div class="flex items-center gap-2 text-emerald-400 text-sm font-semibold">
+        <span class="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></span>
+        Ro'yxatdan o'tish ochiq
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<!-- ════════════════════════════════════════════════════
+     MUVAFFAQIYAT MODALI
+════════════════════════════════════════════════════ -->
+<div class="modal-wrap" id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+  <div class="modal-box" tabindex="-1">
+
+    <!-- Icon -->
+    <div class="text-center mb-5" id="modal-check-wrap">
+      <div class="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mx-auto pop-in">
+        <svg class="w-10 h-10 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
+        </svg>
+      </div>
+    </div>
+
+    <h3 id="modal-title" class="text-2xl font-extrabold text-gray-900 text-center mb-1">Rahmat! 🎉</h3>
+    <p class="text-gray-500 text-center mb-6">
+      Arizangiz muvaffaqiyatli qabul qilindi.<br/>Tez orada siz bilan bog'lanamiz!
+    </p>
+
+    <!-- Summary -->
+    <div class="bg-gray-50 rounded-xl p-4 border border-gray-100 mb-6">
+      <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Yuborilgan ma'lumotlar</p>
+
+      <div class="sum-row">
+        <span class="sum-label">👤 Ism</span>
+        <span class="sum-val" id="m-name">—</span>
+      </div>
+      <div class="sum-row">
+        <span class="sum-label">🎓 Guruh</span>
+        <span class="sum-val" id="m-group">—</span>
+      </div>
+      <div class="sum-row">
+        <span class="sum-label">📞 Bog'lanish</span>
+        <span class="sum-val" id="m-contact">—</span>
+      </div>
+      <div class="sum-row" id="m-days-row">
+        <span class="sum-label">📅 Kunlar</span>
+        <span class="sum-val" id="m-days">—</span>
+      </div>
+      <div class="sum-row" id="m-time-row">
+        <span class="sum-label">⏰ Vaqt</span>
+        <span class="sum-val" id="m-time">—</span>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="flex flex-col sm:flex-row gap-3">
+      <button onclick="closeModal()"
+              class="flex-1 py-3 px-5 border-2 border-gray-200 rounded-xl font-semibold text-gray-700 hover:bg-gray-50 transition-colors text-sm">
+        Yopish
+      </button>
+      <button onclick="resetForm()"
+              class="btn-blue flex-1 py-3 px-5 text-sm rounded-xl">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"/>
+        </svg>
+        Yangi ariza to'ldirish
+      </button>
+    </div>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════════════════
+     JAVASCRIPT
+════════════════════════════════════════════════════ -->
+<script>
+/* ═══ State ═══ */
+let contactType = null;
+const pickedDays = new Set();
+
+/* ════════════════
+   NAVBAR
+════════════════ */
+const navbar    = document.getElementById('navbar');
+const mobileMenu = document.getElementById('mobile-menu');
+const hamIcon   = document.getElementById('ham-icon');
+const closeIcon = document.getElementById('close-icon');
+
+window.addEventListener('scroll', () => {
+  navbar.classList.toggle('nav-shadow', window.scrollY > 8);
+});
+
+document.getElementById('hamburger').addEventListener('click', () => {
+  const open = mobileMenu.classList.toggle('open');
+  hamIcon.classList.toggle('hidden', open);
+  closeIcon.classList.toggle('hidden', !open);
+});
+
+function closeMobileMenu() {
+  mobileMenu.classList.remove('open');
+  hamIcon.classList.remove('hidden');
+  closeIcon.classList.add('hidden');
+}
+
+/* ════════════════
+   CONTACT TYPE
+════════════════ */
+function pickContact(type) {
+  /* Deselect all */
+  ['phone', 'telegram', 'other'].forEach(t => {
+    const el = document.getElementById('cc-' + t);
+    el.classList.remove('picked');
+    el.setAttribute('aria-checked', 'false');
+  });
+
+  /* Select chosen */
+  document.getElementById('cc-' + type).classList.add('picked');
+  document.getElementById('cc-' + type).setAttribute('aria-checked', 'true');
+  contactType = type;
+
+  /* Show container */
+  document.getElementById('dyn-field').classList.remove('hidden');
+
+  /* Hide all sub-fields */
+  ['df-phone', 'df-telegram', 'df-other'].forEach(id =>
+    document.getElementById(id).classList.add('hidden')
+  );
+
+  /* Show chosen sub-field */
+  document.getElementById('df-' + type).classList.remove('hidden');
+
+  /* Focus input */
+  const focusMap = { phone: 'inp-phone', telegram: 'inp-telegram', other: 'inp-other' };
+  setTimeout(() => document.getElementById(focusMap[type])?.focus(), 80);
+
+  /* Clear errors */
+  hide('err-contact-type');
+  hide('err-contact-val');
+}
+
+/* ════════════════
+   DAY PILLS
+════════════════ */
+function toggleDay(btn) {
+  const day = btn.dataset.day;
+  if (pickedDays.has(day)) {
+    pickedDays.delete(day);
+    btn.classList.remove('on');
+    btn.setAttribute('aria-pressed', 'false');
+  } else {
+    pickedDays.add(day);
+    btn.classList.add('on');
+    btn.setAttribute('aria-pressed', 'true');
+  }
+}
+
+/* ════════════════
+   HELPERS
+════════════════ */
+const $ = id => document.getElementById(id);
+
+function show(id) { $(id)?.classList.remove('hidden'); }
+function hide(id) { $(id)?.classList.add('hidden'); }
+
+function setErr(inputId, errId) {
+  $(inputId)?.classList.add('is-error');
+  show(errId);
+}
+function clrErr(inputId, errId) {
+  $(inputId)?.classList.remove('is-error');
+  hide(errId);
+}
+
+/* Live validation */
+$('f-name').addEventListener('input', () => { if ($('f-name').value.trim().length >= 3) clrErr('f-name', 'err-name'); });
+$('f-group').addEventListener('input', () => { if ($('f-group').value.trim()) clrErr('f-group', 'err-group'); });
+
+function getContactValue() {
+  if (!contactType) return '';
+  const map = { phone: 'inp-phone', telegram: 'inp-telegram', other: 'inp-other' };
+  return $(map[contactType])?.value.trim() || '';
+}
+
+function contactLabel() {
+  return { phone: 'Telefon qo\'ng\'irog\'i', telegram: 'Telegram', other: 'Boshqa usul' }[contactType] || '';
+}
+
+/* ════════════════
+   FORM SUBMIT
+════════════════ */
+$('reg-form').addEventListener('submit', function (e) {
+  e.preventDefault();
+
+  let ok = true;
+
+  /* Name */
+  const name = $('f-name').value.trim();
+  if (name.length < 3) { setErr('f-name', 'err-name');  ok = false; }
+  else                  { clrErr('f-name', 'err-name'); }
+
+  /* Group */
+  const group = $('f-group').value.trim();
+  if (!group) { setErr('f-group', 'err-group'); ok = false; }
+  else        { clrErr('f-group', 'err-group'); }
+
+  /* Contact type */
+  if (!contactType) { show('err-contact-type'); ok = false; }
+  else              { hide('err-contact-type'); }
+
+  /* Contact value */
+  const cVal = getContactValue();
+  if (contactType && !cVal) { show('err-contact-val'); ok = false; }
+  else                      { hide('err-contact-val'); }
+
+  if (!ok) {
+    /* Scroll to first visible error */
+    const firstErr = document.querySelector('.err-txt:not(.hidden), .is-error');
+    firstErr?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return;
+  }
+
+  /* ── Loading state ── */
+  const btn = $('sub-btn');
+  btn.disabled = true;
+  btn.innerHTML = `
+    <svg class="w-5 h-5 spin" fill="none" viewBox="0 0 24 24">
+      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
+      <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
+    </svg>
+    Yuborilmoqda...`;
+
+  /*
+  ┌────────────────────────────────────────────────────────────────────┐
+  │  KEYINCHALIK FORMSPREE ORQALI YUBORISH                              │
+  │                                                                      │
+  │  Quyidagi blokni setTimeout o'rniga ishlating:                       │
+  │                                                                      │
+  │  fetch('https://formspree.io/f/YOUR_FORM_ID', {                     │
+  │    method: 'POST',                                                   │
+  │    headers: { 'Content-Type': 'application/json',                   │
+  │               'Accept': 'application/json' },                       │
+  │    body: JSON.stringify({                                            │
+  │      fullname: name, group,                                         │
+  │      contact_type: contactLabel(),                                   │
+  │      contact_value: cVal,                                           │
+  │      days: [...pickedDays].join(', ') || 'Ko\'rsatilmagan',         │
+  │      time_pref: $('f-time').value || 'Ko\'rsatilmagan',             │
+  │      comment: $('f-comment').value                                   │
+  │    })                                                                │
+  │  })                                                                  │
+  │  .then(r => r.json())                                                │
+  │  .then(data => {                                                     │
+  │    resetBtn();                                                       │
+  │    if (data.ok) openModal(name, group, cVal, pickedDays,            │
+  │                           $('f-time').value);                       │
+  │    else alert('Xatolik yuz berdi. Qayta urinib ko\'ring.');          │
+  │  }).catch(() => { resetBtn(); alert('Tarmoq xatosi!'); });          │
+  │                                                                      │
+  └────────────────────────────────────────────────────────────────────┘
+  */
+
+  /* Simulate request (1 s delay) */
+  setTimeout(() => {
+    resetBtn();
+    openModal(name, group, cVal, pickedDays, $('f-time').value);
+  }, 1000);
+});
+
+function resetBtn() {
+  const btn = $('sub-btn');
+  btn.disabled = false;
+  btn.innerHTML = `
+    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+    </svg>
+    Ariza Yuborish`;
+}
+
+/* ════════════════
+   MODAL
+════════════════ */
+function openModal(name, group, cVal, days, time) {
+  /* Populate summary */
+  $('m-name').textContent    = name;
+  $('m-group').textContent   = group;
+  $('m-contact').textContent = contactLabel() + ': ' + cVal;
+  $('m-days').textContent    = days.size ? [...days].join(', ') : 'Ko\'rsatilmagan';
+  $('m-time').textContent    = time || 'Ko\'rsatilmagan';
+
+  /* Re-trigger check animation */
+  const wrap = $('modal-check-wrap');
+  const child = wrap.firstElementChild;
+  child.classList.remove('pop-in');
+  void child.offsetWidth; /* reflow */
+  child.classList.add('pop-in');
+
+  /* Show modal */
+  $('modal').classList.add('show');
+  document.body.style.overflow = 'hidden';
+  setTimeout(() => $('modal').querySelector('.modal-box').focus(), 80);
+}
+
+function closeModal() {
+  $('modal').classList.remove('show');
+  document.body.style.overflow = '';
+}
+
+function resetForm() {
+  closeModal();
+  $('reg-form').reset();
+
+  /* Reset contact state */
+  contactType = null;
+  ['phone', 'telegram', 'other'].forEach(t => {
+    const el = document.getElementById('cc-' + t);
+    el.classList.remove('picked');
+    el.setAttribute('aria-checked', 'false');
+  });
+  hide('dyn-field');
+  ['df-phone', 'df-telegram', 'df-other'].forEach(id => hide(id));
+
+  /* Reset days */
+  pickedDays.clear();
+  document.querySelectorAll('.d-pill').forEach(p => {
+    p.classList.remove('on');
+    p.setAttribute('aria-pressed', 'false');
+  });
+
+  /* Clear errors */
+  document.querySelectorAll('.err-txt').forEach(el => el.classList.add('hidden'));
+  document.querySelectorAll('.is-error').forEach(el => el.classList.remove('is-error'));
+
+  /* Scroll to form */
+  $('register').scrollIntoView({ behavior: 'smooth' });
+}
+
+/* Close on overlay click */
+$('modal').addEventListener('click', e => { if (e.target === $('modal')) closeModal(); });
+
+/* Close on Escape */
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && $('modal').classList.contains('show')) closeModal();
+});
+</script>
+
+</body>
+</html>
